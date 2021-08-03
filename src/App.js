@@ -1,7 +1,7 @@
 import "./App.css"
 import Graph from "./components/Graph"
 import Header from "./components/Header"
-import Ticker from "./components/Ticker"
+import TickerList from "./components/TickerList"
 function App() {
 	return (
 		<div className="App">
@@ -10,7 +10,7 @@ function App() {
 					<Header />
 					<hr className="w-full border-t border-gray-600 my-4" />
 					<dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-						<Ticker />
+						<TickerList />
 					</dl>
 					<hr className="w-full border-t border-gray-600 my-4" />
 					<Graph />

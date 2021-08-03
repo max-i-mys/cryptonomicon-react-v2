@@ -1,4 +1,21 @@
+import { useState } from "react"
+import { useTickers } from "../hooks/useTickers"
+
 export default function Header() {
+	const [currentValue, setCurrentValue] = useState(null)
+	const [tickers, dispatch] = useTickers()
+
+	function handlerAdd() {
+		const id =
+			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
+		const newTicker = {
+			current: currentValue,
+			id: id + 1,
+		}
+		if (newTicker.current) {
+			dispatch({ type: "ADD", payload: newTicker })
+		}
+	}
 	return (
 		<>
 			<section>
@@ -12,6 +29,9 @@ export default function Header() {
 						</label>
 						<div className="mt-1 relative rounded-md shadow-md">
 							<input
+								onChange={e =>
+									setCurrentValue(() => e.target.value.trim().toUpperCase())
+								}
 								type="text"
 								name="wallet"
 								id="wallet"
@@ -37,6 +57,7 @@ export default function Header() {
 					</div>
 				</div>
 				<button
+					onClick={handlerAdd}
 					type="button"
 					className="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 				>
