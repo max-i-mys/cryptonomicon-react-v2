@@ -11,7 +11,12 @@ export default function TickersProvider({ children }) {
 			case "ADD":
 				return [...state, action.payload]
 			case "DELETE": {
-				return
+				const newState = [...state]
+				const idx = state.findIndex(ticker => ticker.id === action.payload)
+				if (idx !== -1) {
+					newState.splice(idx, 1)
+				}
+				return newState
 			}
 			default:
 				throw new Error(`Wrong action type: ${action.type}`)

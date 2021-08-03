@@ -1,4 +1,12 @@
+import { useTickers } from "../hooks/useTickers"
+
 export default function Ticker({ tickerData }) {
+	const [, dispatch] = useTickers()
+	function handlerDelete() {
+		if (tickerData.id) {
+			dispatch({ type: "DELETE", payload: tickerData.id })
+		}
+	}
 	return (
 		<>
 			<div className="bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer">
@@ -11,7 +19,10 @@ export default function Ticker({ tickerData }) {
 					</dd>
 				</div>
 				<div className="w-full border-t border-gray-200"></div>
-				<button className="flex items-center justify-center font-medium w-full bg-gray-100 px-4 py-4 sm:px-6 text-md text-gray-500 hover:text-gray-600 hover:bg-gray-200 hover:opacity-20 transition-all focus:outline-none">
+				<button
+					onClick={handlerDelete}
+					className="flex items-center justify-center font-medium w-full bg-gray-100 px-4 py-4 sm:px-6 text-md text-gray-500 hover:text-gray-600 hover:bg-gray-200 hover:opacity-20 transition-all focus:outline-none"
+				>
 					<svg
 						className="h-5 w-5"
 						xmlns="http://www.w3.org/2000/svg"
