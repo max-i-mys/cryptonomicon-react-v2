@@ -1,21 +1,32 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTickers } from "../hooks/useTickers"
+import { topCurrencies } from "../utils/constants"
 
 export default function Header() {
-	const [currentValue, setCurrentValue] = useState(null)
+	const [currentValue, setCurrentValue] = useState("")
+	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [tickers, dispatch] = useTickers()
 
 	function handlerAdd() {
+		const isTicker = tickers.find(ticker => ticker.current === currentValue)
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
 		}
-		if (newTicker.current) {
+		if (newTicker.current && !isTicker) {
 			dispatch({ type: "ADD", payload: newTicker })
+			setCurrentValue("")
+			return
 		}
+		setShowMesDoubleTick(true)
 	}
+	useEffect(() => {
+		let timerShowMesDoubleTick = null
+		setTimeout(() => setShowMesDoubleTick(false), 3000)
+		return () => clearTimeout(timerShowMesDoubleTick)
+	}, [showMesDoubleTick])
 	return (
 		<>
 			<section>
@@ -32,28 +43,48 @@ export default function Header() {
 								onChange={e =>
 									setCurrentValue(() => e.target.value.trim().toUpperCase())
 								}
+								onKeyDown={e =>
+									e.key === "Enter" && currentValue ? handlerAdd() : ""
+								}
 								type="text"
 								name="wallet"
 								id="wallet"
 								className="block w-full pr-10 border-gray-300 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md"
 								placeholder="Например DOGE"
+								value={currentValue}
 							/>
 						</div>
 						<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">
-							<span className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
-								BTC
+							<span
+								onClick={() => setCurrentValue(() => topCurrencies.first)}
+								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
+							>
+								{topCurrencies.first}
 							</span>
-							<span className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
-								DOGE
+							<span
+								onClick={() => setCurrentValue(() => topCurrencies.second)}
+								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
+							>
+								{topCurrencies.second}
 							</span>
-							<span className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
-								BCH
+							<span
+								onClick={() => setCurrentValue(() => topCurrencies.third)}
+								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
+							>
+								{topCurrencies.third}
 							</span>
-							<span className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer">
-								CHD
+							<span
+								onClick={() => setCurrentValue(() => topCurrencies.fourth)}
+								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
+							>
+								{topCurrencies.fourth}
 							</span>
 						</div>
-						<div className="text-sm text-red-600">Такой тикер уже добавлен</div>
+						{showMesDoubleTick && (
+							<div className="text-sm text-red-600">
+								Такой тикер уже добавлен
+							</div>
+						)}
 					</div>
 				</div>
 				<button
