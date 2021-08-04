@@ -7,6 +7,7 @@ export default function Ticker({ tickerData }) {
 			dispatch({ type: "DELETE", payload: tickerData.id })
 		}
 	}
+
 	return (
 		<>
 			<div className="bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer">

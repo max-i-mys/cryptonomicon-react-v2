@@ -1,6 +1,6 @@
 export const topCurrencies = {
 	first: "BTC",
 	second: "DOGE",
-	third: "BTH",
-	fourth: "XCH",
+	third: "XCH",
+	fourth: "ETH",
 }

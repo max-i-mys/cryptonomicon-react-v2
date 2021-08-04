@@ -1,32 +1,46 @@
 import { useState, useEffect } from "react"
 import { useTickers } from "../hooks/useTickers"
+import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
-
 export default function Header() {
 	const [currentValue, setCurrentValue] = useState("")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
+	const [showMesNotTick, setShowMesNotTick] = useState(false)
 	const [tickers, dispatch] = useTickers()
+	const [actualCoins] = useValidate()
 
 	function handlerAdd() {
 		const isTicker = tickers.find(ticker => ticker.current === currentValue)
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
+		const actualTicker = actualCoins.find(coin => coin === currentValue)
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
 		}
-		if (newTicker.current && !isTicker) {
+		if (newTicker.current && !isTicker && actualTicker) {
 			dispatch({ type: "ADD", payload: newTicker })
 			setCurrentValue("")
 			return
 		}
-		setShowMesDoubleTick(true)
+		if (isTicker) {
+			setShowMesDoubleTick(true)
+		}
+		if (!actualTicker) {
+			setShowMesNotTick(true)
+		}
 	}
 	useEffect(() => {
 		let timerShowMesDoubleTick = null
 		setTimeout(() => setShowMesDoubleTick(false), 3000)
 		return () => clearTimeout(timerShowMesDoubleTick)
 	}, [showMesDoubleTick])
+
+	useEffect(() => {
+		let timerShowMesNotTick = null
+		setTimeout(() => setShowMesNotTick(false), 3000)
+		return () => clearTimeout(timerShowMesNotTick)
+	}, [showMesNotTick])
 	return (
 		<>
 			<section>
@@ -85,10 +99,15 @@ export default function Header() {
 								Такой тикер уже добавлен
 							</div>
 						)}
+						{showMesNotTick && (
+							<div className="text-sm text-red-600">
+								Невозможно обработать тикер
+							</div>
+						)}
 					</div>
 				</div>
 				<button
-					onClick={handlerAdd}
+					onClick={() => (currentValue ? handlerAdd() : "")}
 					type="button"
 					className="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
 				>
