@@ -18,6 +18,10 @@ export default function Header() {
 			return
 		}
 		const isTicker = tickers.find(ticker => ticker.current === currentValue)
+		if (isTicker) {
+			setShowMesDoubleTick(true)
+			return
+		}
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
 		const actualTicker = actualCoins.find(coin => coin === currentValue)
@@ -28,10 +32,6 @@ export default function Header() {
 		if (newTicker.current && !isTicker && actualTicker) {
 			dispatch({ type: "ADD", payload: newTicker })
 			setCurrentValue("")
-			return
-		}
-		if (isTicker) {
-			setShowMesDoubleTick(true)
 			return
 		}
 		setShowMesNotTick(true)
@@ -131,14 +131,13 @@ export default function Header() {
 										Загружается список монет...
 									</div>
 								)}
-								{showMesDoubleTick && (
-									<div className="text-sm text-red-600">
-										Такой тикер уже добавлен
-									</div>
-								)}
 							</>
 						)}
-
+						{showMesDoubleTick && (
+							<div className="text-sm text-red-600">
+								Такой тикер уже добавлен
+							</div>
+						)}
 						{showMesNotTick && (
 							<div className="text-sm text-red-600">
 								Невозможно обработать тикер
