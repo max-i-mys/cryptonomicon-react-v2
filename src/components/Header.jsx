@@ -6,10 +6,17 @@ export default function Header() {
 	const [currentValue, setCurrentValue] = useState("")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
+	const [showBlockLoadTicker, setShowBlockLoadTicker] = useState(true)
+	const [showMesNotLoadingTickers, setShowMesNotLoadingTickers] =
+		useState(false)
 	const [tickers, dispatch] = useTickers()
-	const [actualCoins] = useValidate()
+	const [actualCoins, , switchLoadingTickers] = useValidate()
 
 	function handlerAdd() {
+		if (actualCoins === "Error") {
+			setShowMesNotLoadingTickers(true)
+			return
+		}
 		const isTicker = tickers.find(ticker => ticker.current === currentValue)
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
@@ -25,22 +32,41 @@ export default function Header() {
 		}
 		if (isTicker) {
 			setShowMesDoubleTick(true)
+			return
 		}
-		if (!actualTicker) {
-			setShowMesNotTick(true)
-		}
+		setShowMesNotTick(true)
 	}
 	useEffect(() => {
 		let timerShowMesDoubleTick = null
-		setTimeout(() => setShowMesDoubleTick(false), 3000)
+		timerShowMesDoubleTick = setTimeout(() => setShowMesDoubleTick(false), 3000)
 		return () => clearTimeout(timerShowMesDoubleTick)
 	}, [showMesDoubleTick])
 
 	useEffect(() => {
 		let timerShowMesNotTick = null
-		setTimeout(() => setShowMesNotTick(false), 3000)
+		timerShowMesNotTick = setTimeout(() => setShowMesNotTick(false), 3000)
 		return () => clearTimeout(timerShowMesNotTick)
 	}, [showMesNotTick])
+
+	useEffect(() => {
+		let timerShowMesNotLoadingTickers = null
+		timerShowMesNotLoadingTickers = setTimeout(
+			() => setShowMesNotLoadingTickers(false),
+			3000
+		)
+		return () => clearTimeout(timerShowMesNotLoadingTickers)
+	}, [showMesNotLoadingTickers])
+
+	useEffect(() => {
+		let timerShowBlockLoadTicker = null
+		if (switchLoadingTickers) {
+			timerShowBlockLoadTicker = setTimeout(
+				() => setShowBlockLoadTicker(false),
+				5000
+			)
+		}
+		return () => clearTimeout(timerShowBlockLoadTicker)
+	}, [switchLoadingTickers])
 	return (
 		<>
 			<section>
@@ -94,14 +120,33 @@ export default function Header() {
 								{topCurrencies.fourth}
 							</span>
 						</div>
-						{showMesDoubleTick && (
-							<div className="text-sm text-red-600">
-								Такой тикер уже добавлен
-							</div>
+						{showBlockLoadTicker && (
+							<>
+								{switchLoadingTickers ? (
+									<div className="text-sm text-green-600">
+										Список монет загружен
+									</div>
+								) : (
+									<div className="text-sm text-blue-600">
+										Загружается список монет...
+									</div>
+								)}
+								{showMesDoubleTick && (
+									<div className="text-sm text-red-600">
+										Такой тикер уже добавлен
+									</div>
+								)}
+							</>
 						)}
+
 						{showMesNotTick && (
 							<div className="text-sm text-red-600">
 								Невозможно обработать тикер
+							</div>
+						)}
+						{showMesNotLoadingTickers && (
+							<div className="text-sm text-red-600">
+								Тикеры еще не загружены
 							</div>
 						)}
 					</div>
