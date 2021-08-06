@@ -4,7 +4,7 @@ export const TickerContext = createContext()
 const initialState = []
 
 export default function TickersProvider({ children }) {
-	const [state, dispatchState] = useReducer(reducer, initialState)
+	const [tickers, dispatchTickers] = useReducer(reducer, initialState)
 
 	function reducer(state, action) {
 		switch (action.type) {
@@ -18,13 +18,22 @@ export default function TickersProvider({ children }) {
 				}
 				return newState
 			}
+			case "ACTIVE": {
+				const newState = [...state]
+				newState.forEach(ticker =>
+					ticker.id === action.payload.id
+						? (ticker.active = true)
+						: (ticker.active = false)
+				)
+				return newState
+			}
 			default:
 				throw new Error(`Wrong action type: ${action.type}`)
 		}
 	}
 	return (
 		<>
-			<TickerContext.Provider value={[state, dispatchState]}>
+			<TickerContext.Provider value={[tickers, dispatchTickers]}>
 				{children}
 			</TickerContext.Provider>
 		</>

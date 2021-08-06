@@ -7,10 +7,19 @@ export default function Ticker({ tickerData }) {
 			dispatch({ type: "DELETE", payload: tickerData.id })
 		}
 	}
-
+	function handlerActive() {
+		if (tickerData.id) {
+			dispatch({ type: "ACTIVE", payload: tickerData })
+		}
+	}
 	return (
 		<>
-			<div className="bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer">
+			<div
+				onClick={handlerActive}
+				className={`bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer ${
+					tickerData.active && "border-4"
+				}`}
+			>
 				<div className="px-4 py-5 sm:p-6 text-center">
 					<dt className="text-sm font-medium text-gray-500 truncate">
 						{tickerData.current} - USD

@@ -28,6 +28,7 @@ export default function Header() {
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
+			active: false,
 		}
 		if (newTicker.current && !isTicker && actualTicker) {
 			dispatch({ type: "ADD", payload: newTicker })
