@@ -5,6 +5,7 @@ export const ValidateContext = createContext()
 export default function ValidateProvider({ children }) {
 	const [thereIsCoins, setThereIsCoins] = useState("Error")
 	const [switchLoadingTickers, setSwitchLoadingTickers] = useState(false)
+	const [connectErr, setConnectErr] = useState(0)
 	useEffect(() => {
 		let timerRequestToServer = null
 
@@ -15,12 +16,14 @@ export default function ValidateProvider({ children }) {
 					coin => coin.Symbol
 				)
 				setThereIsCoins(actualCoinsArr)
+				setConnectErr(0)
 				if (actualCoins) {
 					setSwitchLoadingTickers(true)
 				}
 			}
 			if (actualCoinsErr) {
-				setTimeout(() => requestToServer, 5000)
+				setTimeout(() => requestToServer(), 5000)
+				setConnectErr(prev => prev + 1)
 			}
 		}, 0)
 		return () => clearTimeout(timerRequestToServer)
@@ -29,7 +32,12 @@ export default function ValidateProvider({ children }) {
 	return (
 		<>
 			<ValidateContext.Provider
-				value={[thereIsCoins, setThereIsCoins, switchLoadingTickers]}
+				value={{
+					thereIsCoins,
+					setThereIsCoins,
+					switchLoadingTickers,
+					connectErr,
+				}}
 			>
 				{children}
 			</ValidateContext.Provider>

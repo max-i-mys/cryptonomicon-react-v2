@@ -10,10 +10,10 @@ export default function Header() {
 	const [showMesNotLoadingTickers, setShowMesNotLoadingTickers] =
 		useState(false)
 	const [tickers, dispatch] = useTickers()
-	const [actualCoins, , switchLoadingTickers] = useValidate()
+	const { thereIsCoins, switchLoadingTickers, connectErr } = useValidate()
 
 	function handlerAdd() {
-		if (actualCoins === "Error") {
+		if (thereIsCoins === "Error") {
 			setShowMesNotLoadingTickers(true)
 			return
 		}
@@ -24,7 +24,7 @@ export default function Header() {
 		}
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
-		const actualTicker = actualCoins.find(coin => coin === currentValue)
+		const actualTicker = thereIsCoins.find(coin => coin === currentValue)
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
@@ -129,6 +129,11 @@ export default function Header() {
 								) : (
 									<div className="text-sm text-blue-600">
 										Загружается список монет...
+										{connectErr > 3 && (
+											<p className="text-sm font text-red-600">
+												Нет соединения!
+											</p>
+										)}
 									</div>
 								)}
 							</>
