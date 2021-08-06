@@ -28,6 +28,7 @@ export default function Header() {
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
+			price: "-",
 			active: false,
 		}
 		if (newTicker.current && !isTicker && actualTicker) {
@@ -68,6 +69,10 @@ export default function Header() {
 		}
 		return () => clearTimeout(timerShowBlockLoadTicker)
 	}, [switchLoadingTickers])
+
+	useEffect(() => {
+		console.log(tickers)
+	}, [tickers])
 	return (
 		<>
 			<section>

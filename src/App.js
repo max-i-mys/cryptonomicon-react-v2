@@ -20,7 +20,6 @@ function App() {
 							<hr className="w-full border-t border-gray-600 my-4" />
 						</>
 					)}
-
 					<Graph />
 				</div>
 			</div>
