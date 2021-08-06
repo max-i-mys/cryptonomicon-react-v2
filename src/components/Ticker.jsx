@@ -16,8 +16,8 @@ export default function Ticker({ tickerData }) {
 		<>
 			<div
 				onClick={handlerActive}
-				className={`bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer ${
-					tickerData.active && "border-4"
+				className={`bg-white border-4 overflow-hidden shadow rounded-lg  border-solid cursor-pointer ${
+					tickerData.active ? "border-purple-800" : " border-opacity-0"
 				}`}
 			>
 				<div className="px-4 py-5 sm:p-6 text-center">
