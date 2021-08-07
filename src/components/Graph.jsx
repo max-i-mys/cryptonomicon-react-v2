@@ -4,22 +4,28 @@ import { useTickers } from "../hooks/useTickers"
 export default function Graph() {
 	const [tickers, dispatchTickers] = useTickers()
 	const [visibleGraph, setVisibleGraph] = useState(false)
+	const [activeCurrent, setActiveCurrent] = useState(null)
+	// const [isThereActiveTicker, setIsThereActiveTicker] = useState(false)
+
 	useEffect(() => {
-		const isThereActive = tickers.find(ticker => ticker.active)
-		if (isThereActive) {
+		const activeTickerIndex = tickers.findIndex(ticker => ticker.active)
+		if (activeTickerIndex >= 0) {
+			setActiveCurrent(tickers[activeTickerIndex].current)
 			setVisibleGraph(true)
+			return
 		}
+		setVisibleGraph(false)
 	}, [tickers])
 	function handlerClose() {
 		setVisibleGraph(false)
-		dispatchTickers({ type: "ACTIVE", payload: {} })
+		dispatchTickers({ type: "ACTIVE_TICKER", payload: {} })
 	}
 	return (
 		<>
 			{visibleGraph && (
 				<section className="relative">
 					<h3 className="text-lg leading-6 font-medium text-gray-900 my-8">
-						VUE - USD
+						{activeCurrent} - USD
 					</h3>
 					<div className="flex items-end border-gray-600 border-b border-l h-64">
 						<div className="bg-purple-800 border w-10 h-24"></div>

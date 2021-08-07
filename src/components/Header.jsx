@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react"
+import { useCurrents } from "../hooks/useCurrents"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
+
 export default function Header() {
+	const [crrnts] = useCurrents()
 	const [currentValue, setCurrentValue] = useState("")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
@@ -32,7 +35,7 @@ export default function Header() {
 			active: false,
 		}
 		if (newTicker.current && !isTicker && actualTicker) {
-			dispatch({ type: "ADD", payload: newTicker })
+			dispatch({ type: "ADD_TICKER", payload: newTicker })
 			setCurrentValue("")
 			return
 		}
@@ -70,9 +73,13 @@ export default function Header() {
 		return () => clearTimeout(timerShowBlockLoadTicker)
 	}, [switchLoadingTickers])
 
+	// useEffect(() => {
+	// 	console.log(tickers)
+	// }, [tickers])
 	useEffect(() => {
-		console.log(tickers)
-	}, [tickers])
+		const string = crrnts.join(",")
+		console.log(string)
+	}, [crrnts])
 	return (
 		<>
 			<section>

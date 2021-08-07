@@ -8,9 +8,9 @@ export default function TickersProvider({ children }) {
 
 	function reducer(state, action) {
 		switch (action.type) {
-			case "ADD":
+			case "ADD_TICKER":
 				return [...state, action.payload]
-			case "DELETE": {
+			case "DELETE_TICKER": {
 				const newState = [...state]
 				const idx = state.findIndex(ticker => ticker.id === action.payload)
 				if (idx !== -1) {
@@ -18,7 +18,7 @@ export default function TickersProvider({ children }) {
 				}
 				return newState
 			}
-			case "ACTIVE": {
+			case "ACTIVE_TICKER": {
 				const newState = [...state]
 				newState.forEach(ticker =>
 					ticker.id === action.payload.id
