@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import { useCurrents } from "../hooks/useCurrents"
+// import { useCurrents } from "../hooks/useCurrents"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
 
 export default function Header() {
-	const [crrnts] = useCurrents()
+	// const [crrnts] = useCurrents()
 	const [currentValue, setCurrentValue] = useState("")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
@@ -76,10 +76,10 @@ export default function Header() {
 	// useEffect(() => {
 	// 	console.log(tickers)
 	// }, [tickers])
-	useEffect(() => {
-		const string = crrnts.join(",")
-		console.log(string)
-	}, [crrnts])
+	// useEffect(() => {
+	// 	const string = crrnts.join(",")
+	// 	console.log(string)
+	// }, [crrnts])
 	return (
 		<>
 			<section>

@@ -5,14 +5,17 @@ import App from "./App"
 import TickersProvider from "./contexts/TickersContext"
 import ValidateProvider from "./contexts/ValidateContext"
 import CurrentsProvider from "./contexts/CurrentsContext"
+import GraphProvider from "./contexts/GraphContext"
 
 ReactDOM.render(
 	<React.StrictMode>
 		<CurrentsProvider>
 			<TickersProvider>
-				<ValidateProvider>
-					<App />
-				</ValidateProvider>
+				<GraphProvider>
+					<ValidateProvider>
+						<App />
+					</ValidateProvider>
+				</GraphProvider>
 			</TickersProvider>
 		</CurrentsProvider>
 	</React.StrictMode>,

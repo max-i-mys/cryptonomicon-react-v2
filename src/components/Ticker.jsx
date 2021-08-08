@@ -1,12 +1,16 @@
 import { useCurrents } from "../hooks/useCurrents"
+import useGraph from "../hooks/useGraph"
 import { useTickers } from "../hooks/useTickers"
+
 export default function Ticker({ tickerData }) {
 	const [, dispatchTickers] = useTickers()
 	const [, dispatchCurrents] = useCurrents()
+	const [, dispatchDataTicker] = useGraph()
 	function handlerDelete(e) {
 		e.stopPropagation()
 		if (tickerData.id) {
 			dispatchTickers({ type: "DELETE_TICKER", payload: tickerData.id })
+			dispatchDataTicker({ type: "DELETE_DATA_ACTIVE", payload: null })
 			dispatchCurrents({ type: "DELETE_CURRENT", payload: tickerData.current })
 		}
 	}
@@ -14,6 +18,10 @@ export default function Ticker({ tickerData }) {
 		if (tickerData.id) {
 			dispatchTickers({ type: "ACTIVE_TICKER", payload: tickerData })
 			dispatchCurrents({ type: "ADD_CURRENT", payload: tickerData.current })
+			dispatchDataTicker({
+				type: "ADD_DATA_ACTIVE",
+				payload: tickerData.id,
+			})
 		}
 	}
 	return (

@@ -1,31 +1,20 @@
-import { useEffect, useState } from "react"
+import useGraph from "../hooks/useGraph"
 import { useTickers } from "../hooks/useTickers"
 
 export default function Graph() {
-	const [tickers, dispatchTickers] = useTickers()
-	const [visibleGraph, setVisibleGraph] = useState(false)
-	const [activeCurrent, setActiveCurrent] = useState(null)
-	// const [isThereActiveTicker, setIsThereActiveTicker] = useState(false)
+	const [dataActiveTicker, dispatchDataActiveTicker] = useGraph()
+	const [, dispatchTickers] = useTickers()
 
-	useEffect(() => {
-		const activeTickerIndex = tickers.findIndex(ticker => ticker.active)
-		if (activeTickerIndex >= 0) {
-			setActiveCurrent(tickers[activeTickerIndex].current)
-			setVisibleGraph(true)
-			return
-		}
-		setVisibleGraph(false)
-	}, [tickers])
 	function handlerClose() {
-		setVisibleGraph(false)
+		dispatchDataActiveTicker({ type: "DELETE_DATA_ACTIVE", payload: null })
 		dispatchTickers({ type: "ACTIVE_TICKER", payload: {} })
 	}
 	return (
 		<>
-			{visibleGraph && (
+			{dataActiveTicker && (
 				<section className="relative">
 					<h3 className="text-lg leading-6 font-medium text-gray-900 my-8">
-						{activeCurrent} - USD
+						{dataActiveTicker.current} - USD
 					</h3>
 					<div className="flex items-end border-gray-600 border-b border-l h-64">
 						<div className="bg-purple-800 border w-10 h-24"></div>
