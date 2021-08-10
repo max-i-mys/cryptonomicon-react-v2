@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react"
-// import { useCurrents } from "../hooks/useCurrents"
+import { getPrices } from "../api/crud"
+import { useCurrents } from "../hooks/useCurrents"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
+import { roundTheNumber } from "../utils/functions"
 
 export default function Header() {
-	// const [crrnts] = useCurrents()
+	const [, dispatchCurrents] = useCurrents()
 	const [currentValue, setCurrentValue] = useState("")
+	const [priceValue, setPriceValue] = useState("unknown")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
 	const [showBlockLoadTicker, setShowBlockLoadTicker] = useState(true)
@@ -15,7 +18,17 @@ export default function Header() {
 	const [tickers, dispatch] = useTickers()
 	const { thereIsCoins, switchLoadingTickers, connectErr } = useValidate()
 
-	function handlerAdd() {
+	useEffect(() => {
+		;(async () => {
+			const [dataPrice, dataPriceErr] = await getPrices(currentValue)
+			if (!dataPriceErr) {
+				const roundedPrice = roundTheNumber(dataPrice[currentValue]?.USD)
+				setPriceValue(() => roundedPrice)
+			}
+		})()
+	}, [currentValue])
+
+	async function handlerAdd() {
 		if (thereIsCoins === "Error") {
 			setShowMesNotLoadingTickers(true)
 			return
@@ -31,11 +44,12 @@ export default function Header() {
 		const newTicker = {
 			current: currentValue,
 			id: id + 1,
-			price: "-",
+			price: priceValue,
 			active: false,
 		}
 		if (newTicker.current && !isTicker && actualTicker) {
 			dispatch({ type: "ADD_TICKER", payload: newTicker })
+			dispatchCurrents({ type: "ADD_CURRENT", payload: currentValue })
 			setCurrentValue("")
 			return
 		}

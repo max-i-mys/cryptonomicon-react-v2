@@ -1,11 +1,13 @@
 import { useCurrents } from "../hooks/useCurrents"
 import useGraph from "../hooks/useGraph"
+import usePrices from "../hooks/usePrices"
 import { useTickers } from "../hooks/useTickers"
 
 export default function Ticker({ tickerData }) {
 	const [, dispatchTickers] = useTickers()
 	const [, dispatchCurrents] = useCurrents()
 	const [, dispatchDataTicker] = useGraph()
+	const [prices] = usePrices()
 	function handlerDelete(e) {
 		e.stopPropagation()
 		if (tickerData.id) {
@@ -17,7 +19,6 @@ export default function Ticker({ tickerData }) {
 	function handlerActive() {
 		if (tickerData.id) {
 			dispatchTickers({ type: "ACTIVE_TICKER", payload: tickerData })
-			dispatchCurrents({ type: "ADD_CURRENT", payload: tickerData.current })
 			dispatchDataTicker({
 				type: "ADD_DATA_ACTIVE",
 				payload: tickerData.id,
@@ -37,7 +38,7 @@ export default function Ticker({ tickerData }) {
 						{tickerData.current} - USD
 					</dt>
 					<dd className="mt-1 text-3xl font-semibold text-gray-900">
-						80000.00
+						{prices?.[tickerData.current]?.USD || tickerData.price}
 					</dd>
 				</div>
 				<div className="w-full border-t border-gray-200"></div>
