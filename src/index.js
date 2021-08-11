@@ -4,13 +4,13 @@ import "./index.css"
 import App from "./App"
 import TickersProvider from "./contexts/TickersContext"
 import ValidateProvider from "./contexts/ValidateContext"
-import CurrentsProvider from "./contexts/CurrentsContext"
+import CurrenciesProvider from "./contexts/CurrenciesContext"
 import GraphProvider from "./contexts/GraphContext"
 import PricesProvider from "./contexts/PricesContext"
 
 ReactDOM.render(
 	<React.StrictMode>
-		<CurrentsProvider>
+		<CurrenciesProvider>
 			<TickersProvider>
 				<PricesProvider>
 					<GraphProvider>
@@ -20,7 +20,7 @@ ReactDOM.render(
 					</GraphProvider>
 				</PricesProvider>
 			</TickersProvider>
-		</CurrentsProvider>
+		</CurrenciesProvider>
 	</React.StrictMode>,
 	document.getElementById("root")
 )

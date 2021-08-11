@@ -1,22 +1,22 @@
 import { createContext, useEffect, useState } from "react"
 import { getPrices } from "../api/crud"
-import { useCurrents } from "../hooks/useCurrents"
+import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { roundTheNumber } from "../utils/functions"
 
 export const PricesContext = createContext()
 
 export default function PricesProvider({ children }) {
-	const [currents] = useCurrents()
+	const [currencies] = useCurrencies()
 	const [prices, setPrices] = useState({})
 	const [, dispatchTickers] = useTickers()
 
 	useEffect(() => {
 		let timerRequestToServer = null
-		if (currents.length > 0) {
-			const currentString = currents.join(",")
+		if (currencies.length > 0) {
+			const currencyString = currencies.join(",")
 			timerRequestToServer = setInterval(async () => {
-				const [pricesData, pricesDataErr] = await getPrices(currentString)
+				const [pricesData, pricesDataErr] = await getPrices(currencyString)
 				if (!pricesDataErr) {
 					for (let key in pricesData) {
 						pricesData[key].USD = roundTheNumber(pricesData[key]?.USD)
@@ -28,14 +28,14 @@ export default function PricesProvider({ children }) {
 		}
 		return () => clearInterval(timerRequestToServer)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currents])
+	}, [currencies])
 
 	// useEffect(() => {
 	// 	let timerRequestToServer = null
-	// 	if (currents.length > 0) {
-	// 		const currentString = currents.join(",")
+	// 	if (currencies.length > 0) {
+	// 		const currencyString = currencies.join(",")
 	// 		timerRequestToServer = setTimeout(async function requestToServer() {
-	// 			const [pricesData, pricesDataErr] = await getPrices(currentString)
+	// 			const [pricesData, pricesDataErr] = await getPrices(currencyString)
 	// 			if (!pricesDataErr) {
 	// 				console.log(pricesData)
 	// 			}
@@ -44,7 +44,7 @@ export default function PricesProvider({ children }) {
 	// 		}, 0)
 	// 	}
 	// 	return () => clearTimeout(timerRequestToServer)
-	// }, [currents])
+	// }, [currencies])
 	return (
 		<>
 			<PricesContext.Provider value={[prices, setPrices]}>

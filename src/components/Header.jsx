@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { getPrices } from "../api/crud"
-import { useCurrents } from "../hooks/useCurrents"
+import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
 import { roundTheNumber } from "../utils/functions"
 
 export default function Header() {
-	const [, dispatchCurrents] = useCurrents()
+	const [, dispatchCurrencies] = useCurrencies()
 	const [currentValue, setCurrentValue] = useState("")
 	const [priceValue, setPriceValue] = useState("unknown")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
@@ -33,7 +33,7 @@ export default function Header() {
 			setShowMesNotLoadingTickers(true)
 			return
 		}
-		const isTicker = tickers.find(ticker => ticker.current === currentValue)
+		const isTicker = tickers.find(ticker => ticker.currency === currentValue)
 		if (isTicker) {
 			setShowMesDoubleTick(true)
 			return
@@ -42,14 +42,15 @@ export default function Header() {
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
 		const actualTicker = thereIsCoins.find(coin => coin === currentValue)
 		const newTicker = {
-			current: currentValue,
+			currency: currentValue,
 			id: id + 1,
 			price: priceValue,
 			active: false,
+			switchPrice: false,
 		}
-		if (newTicker.current && !isTicker && actualTicker) {
+		if (newTicker.currency && !isTicker && actualTicker) {
 			dispatch({ type: "ADD_TICKER", payload: newTicker })
-			dispatchCurrents({ type: "ADD_CURRENT", payload: currentValue })
+			dispatchCurrencies({ type: "ADD_CURRENCY", payload: currentValue })
 			setCurrentValue("")
 			return
 		}
@@ -87,9 +88,9 @@ export default function Header() {
 		return () => clearTimeout(timerShowBlockLoadTicker)
 	}, [switchLoadingTickers])
 
-	useEffect(() => {
-		console.log(tickers)
-	}, [tickers])
+	// useEffect(() => {
+	// 	console.log(tickers)
+	// }, [tickers])
 	// useEffect(() => {
 	// 	const string = crrnts.join(",")
 	// 	console.log(string)

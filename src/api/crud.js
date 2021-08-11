@@ -21,6 +21,6 @@ crud.interceptors.response.use(
 export async function getActualCoins() {
 	return await crud.get("/all/coinlist")
 }
-export async function getPrices(currents) {
-	return await crud.get(`/pricemulti?fsyms=${currents}&tsyms=USD`)
+export async function getPrices(currencies) {
+	return await crud.get(`/pricemulti?fsyms=${currencies}&tsyms=USD`)
 }

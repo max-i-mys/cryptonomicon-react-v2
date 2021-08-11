@@ -30,8 +30,11 @@ export default function TickersProvider({ children }) {
 			case "PRICE_TICKER": {
 				const newState = [...state]
 				newState.forEach(ticker => {
-					if (action.payload[ticker.current]?.USD) {
-						ticker.price = action.payload[ticker.current]?.USD
+					if (action.payload[ticker.currency]?.USD) {
+						ticker.price = action.payload[ticker.currency]?.USD
+					}
+					if (ticker.active === true) {
+						ticker.switchPrice = !ticker.switchPrice
 					}
 				})
 				return newState

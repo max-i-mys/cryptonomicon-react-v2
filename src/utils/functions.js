@@ -5,3 +5,10 @@ export function roundTheNumber(number) {
 		return number.toPrecision(2)
 	}
 }
+export function normalizePrice(countArray) {
+	const maxValue = Math.max(...countArray)
+	const minValue = Math.min(...countArray)
+	return countArray.map(
+		price => 5 + ((price - minValue) * 95) / (maxValue - minValue)
+	)
+}
