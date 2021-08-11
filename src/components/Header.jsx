@@ -87,9 +87,9 @@ export default function Header() {
 		return () => clearTimeout(timerShowBlockLoadTicker)
 	}, [switchLoadingTickers])
 
-	// useEffect(() => {
-	// 	console.log(tickers)
-	// }, [tickers])
+	useEffect(() => {
+		console.log(tickers)
+	}, [tickers])
 	// useEffect(() => {
 	// 	const string = crrnts.join(",")
 	// 	console.log(string)

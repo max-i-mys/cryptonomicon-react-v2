@@ -27,6 +27,15 @@ export default function TickersProvider({ children }) {
 				)
 				return newState
 			}
+			case "PRICE_TICKER": {
+				const newState = [...state]
+				newState.forEach(ticker => {
+					if (action.payload[ticker.current]?.USD) {
+						ticker.price = action.payload[ticker.current]?.USD
+					}
+				})
+				return newState
+			}
 			default:
 				throw new Error(`Wrong action type: ${action.type}`)
 		}
