@@ -9,7 +9,6 @@ import { roundTheNumber } from "../utils/functions"
 export default function Header() {
 	const [, dispatchCurrencies] = useCurrencies()
 	const [currentValue, setCurrentValue] = useState("")
-	const [priceValue, setPriceValue] = useState("unknown")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
 	const [showBlockLoadTicker, setShowBlockLoadTicker] = useState(true)
@@ -17,16 +16,6 @@ export default function Header() {
 		useState(false)
 	const [tickers, dispatch] = useTickers()
 	const { thereIsCoins, switchLoadingTickers, connectErr } = useValidate()
-
-	useEffect(() => {
-		;(async () => {
-			const [dataPrice, dataPriceErr] = await getPrices(currentValue)
-			if (!dataPriceErr) {
-				const roundedPrice = roundTheNumber(dataPrice[currentValue]?.USD)
-				setPriceValue(() => roundedPrice)
-			}
-		})()
-	}, [currentValue])
 
 	async function handlerAdd() {
 		if (thereIsCoins === "Error") {
@@ -44,7 +33,7 @@ export default function Header() {
 		const newTicker = {
 			currency: currentValue,
 			id: id + 1,
-			price: priceValue,
+			price: "-",
 			active: false,
 			switchPrice: false,
 		}

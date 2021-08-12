@@ -5,12 +5,14 @@ import { useTickers } from "../hooks/useTickers"
 export default function Ticker({ tickerData }) {
 	const [, dispatchTickers] = useTickers()
 	const [, dispatchCurrencies] = useCurrencies()
-	const [, dispatchDataTicker] = useGraph()
+	const [activeTicker, dispatchActiveDataTicker] = useGraph()
 	function handlerDelete(e) {
 		e.stopPropagation()
 		if (tickerData.id) {
 			dispatchTickers({ type: "DELETE_TICKER", payload: tickerData.id })
-			dispatchDataTicker({ type: "DELETE_DATA_ACTIVE", payload: null })
+			if (tickerData.id === activeTicker.id) {
+				dispatchActiveDataTicker({ type: "DELETE_DATA_ACTIVE", payload: null })
+			}
 			dispatchCurrencies({
 				type: "DELETE_CURRENCY",
 				payload: tickerData.currency,
@@ -20,7 +22,7 @@ export default function Ticker({ tickerData }) {
 	function handlerActive(e) {
 		if (tickerData.id) {
 			dispatchTickers({ type: "ACTIVE_TICKER", payload: tickerData })
-			dispatchDataTicker({
+			dispatchActiveDataTicker({
 				type: "ADD_DATA_ACTIVE",
 				payload: tickerData.id,
 			})

@@ -1,10 +1,44 @@
-import { createContext, useReducer } from "react"
+import { useRef, useEffect, createContext, useReducer } from "react"
+import { getPrices } from "../api/crud"
+import { useCurrencies } from "../hooks/useCurrencies"
+import { roundTheNumber } from "../utils/functions"
 
 export const TickerContext = createContext()
 const initialState = []
 
 export default function TickersProvider({ children }) {
+	const ref = useRef()
+	const [currencies] = useCurrencies()
 	const [tickers, dispatchTickers] = useReducer(reducer, initialState)
+
+	useEffect(() => {
+		let timerRequestToServer = null
+		timerRequestToServer = setTimeout(() => ref.current(), 0)
+		return () => clearTimeout(timerRequestToServer)
+	}, [])
+
+	useEffect(() => {
+		changePrices()
+		ref.current = async () => {
+			changePrices()
+			setTimeout(() => ref.current(), 5000)
+		}
+		console.log("currencies", currencies)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currencies])
+
+	async function changePrices() {
+		if (currencies.length > 0) {
+			const currencyString = currencies.join(",")
+			const [pricesData, pricesDataErr] = await getPrices(currencyString)
+			if (!pricesDataErr) {
+				for (let key in pricesData) {
+					pricesData[key].USD = roundTheNumber(pricesData[key]?.USD)
+				}
+				dispatchTickers({ type: "PRICE_TICKER", payload: pricesData })
+			}
+		}
+	}
 
 	function reducer(state, action) {
 		switch (action.type) {

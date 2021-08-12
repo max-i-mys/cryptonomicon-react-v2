@@ -6,19 +6,16 @@ import TickersProvider from "./contexts/TickersContext"
 import ValidateProvider from "./contexts/ValidateContext"
 import CurrenciesProvider from "./contexts/CurrenciesContext"
 import GraphProvider from "./contexts/GraphContext"
-import PricesProvider from "./contexts/PricesContext"
 
 ReactDOM.render(
 	<React.StrictMode>
 		<CurrenciesProvider>
 			<TickersProvider>
-				<PricesProvider>
-					<GraphProvider>
-						<ValidateProvider>
-							<App />
-						</ValidateProvider>
-					</GraphProvider>
-				</PricesProvider>
+				<GraphProvider>
+					<ValidateProvider>
+						<App />
+					</ValidateProvider>
+				</GraphProvider>
 			</TickersProvider>
 		</CurrenciesProvider>
 	</React.StrictMode>,
