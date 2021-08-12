@@ -17,7 +17,7 @@ export default function Ticker({ tickerData }) {
 			})
 		}
 	}
-	function handlerActive() {
+	function handlerActive(e) {
 		if (tickerData.id) {
 			dispatchTickers({ type: "ACTIVE_TICKER", payload: tickerData })
 			dispatchDataTicker({
