@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react"
-import { getPrices } from "../api/crud"
 import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
-import { roundTheNumber } from "../utils/functions"
 
 export default function Header() {
 	const [, dispatchCurrencies] = useCurrencies()
@@ -14,7 +12,7 @@ export default function Header() {
 	const [showBlockLoadTicker, setShowBlockLoadTicker] = useState(true)
 	const [showMesNotLoadingTickers, setShowMesNotLoadingTickers] =
 		useState(false)
-	const [tickers, dispatch] = useTickers()
+	const { tickers, dispatchTickers } = useTickers()
 	const { thereIsCoins, switchLoadingTickers, connectErr } = useValidate()
 
 	async function handlerAdd() {
@@ -38,7 +36,7 @@ export default function Header() {
 			switchPrice: false,
 		}
 		if (newTicker.currency && !isTicker && actualTicker) {
-			dispatch({ type: "ADD_TICKER", payload: newTicker })
+			dispatchTickers({ type: "ADD_TICKER", payload: newTicker })
 			dispatchCurrencies({ type: "ADD_CURRENCY", payload: currentValue })
 			setCurrentValue("")
 			return
@@ -77,13 +75,6 @@ export default function Header() {
 		return () => clearTimeout(timerShowBlockLoadTicker)
 	}, [switchLoadingTickers])
 
-	// useEffect(() => {
-	// 	console.log(tickers)
-	// }, [tickers])
-	// useEffect(() => {
-	// 	const string = crrnts.join(",")
-	// 	console.log(string)
-	// }, [crrnts])
 	return (
 		<>
 			<section>

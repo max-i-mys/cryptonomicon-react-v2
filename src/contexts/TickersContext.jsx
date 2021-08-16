@@ -1,4 +1,4 @@
-import { useRef, useEffect, createContext, useReducer } from "react"
+import { useRef, useEffect, createContext, useReducer, useState } from "react"
 import { getPrices } from "../api/crud"
 import { useCurrencies } from "../hooks/useCurrencies"
 import { roundTheNumber } from "../utils/functions"
@@ -9,6 +9,7 @@ const initialState = []
 export default function TickersProvider({ children }) {
 	const ref = useRef()
 	const [currencies] = useCurrencies()
+	const [activeIndex, setActiveIndex] = useState(null)
 	const [tickers, dispatchTickers] = useReducer(reducer, initialState)
 
 	useEffect(() => {
@@ -20,10 +21,9 @@ export default function TickersProvider({ children }) {
 	useEffect(() => {
 		changePrices()
 		ref.current = async () => {
-			changePrices()
+			await changePrices()
 			setTimeout(() => ref.current(), 5000)
 		}
-		console.log("currencies", currencies)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currencies])
 
@@ -52,13 +52,24 @@ export default function TickersProvider({ children }) {
 				}
 				return newState
 			}
-			case "ACTIVE_TICKER": {
+			case "ADD_ACTIVE_TICKER": {
 				const newState = [...state]
-				newState.forEach(ticker =>
-					ticker.id === action.payload.id
-						? (ticker.active = true)
-						: (ticker.active = false)
-				)
+				newState.forEach((ticker, index) => {
+					if (ticker.id === action.payload.id) {
+						ticker.active = true
+						setActiveIndex(index)
+					} else {
+						ticker.active = false
+					}
+				})
+				return newState
+			}
+			case "DISABLE_ACTIVE_TICKER": {
+				const newState = [...state]
+				if (newState[activeIndex]) {
+					newState[activeIndex].active = false
+					setActiveIndex(null)
+				}
 				return newState
 			}
 			case "PRICE_TICKER": {
@@ -79,7 +90,7 @@ export default function TickersProvider({ children }) {
 	}
 	return (
 		<>
-			<TickerContext.Provider value={[tickers, dispatchTickers]}>
+			<TickerContext.Provider value={{ tickers, dispatchTickers, activeIndex }}>
 				{children}
 			</TickerContext.Provider>
 		</>

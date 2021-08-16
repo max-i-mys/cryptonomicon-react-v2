@@ -1,24 +1,23 @@
-import useGraph from "../hooks/useGraph"
 import { useTickers } from "../hooks/useTickers"
 import GraphBars from "./GraphBars"
 
 export default function Graph() {
-	const [dataActiveTicker, dispatchDataActiveTicker] = useGraph()
-	const [, dispatchTickers] = useTickers()
+	const { tickers, dispatchTickers, activeIndex } = useTickers()
 
 	function handlerClose() {
-		dispatchDataActiveTicker({ type: "DELETE_DATA_ACTIVE", payload: null })
-		dispatchTickers({ type: "ACTIVE_TICKER", payload: {} })
+		dispatchTickers({ type: "DISABLE_ACTIVE_TICKER" })
 	}
+
 	return (
 		<>
-			{dataActiveTicker && (
+			{tickers[activeIndex] && (
 				<section className="relative">
 					<h3 className="text-lg leading-6 font-medium text-gray-900 my-8">
-						{dataActiveTicker.currency} - USD
+						{tickers[activeIndex]?.currency} - USD
 					</h3>
+					{/*{tickers[activeIndex].switchPrice ? "yes" : "no"}*/}
 					<div className="flex items-end border-gray-600 border-b border-l h-64">
-						<GraphBars dataTicker={dataActiveTicker} />
+						<GraphBars dataTicker={tickers[activeIndex]} />
 					</div>
 					<button
 						onClick={handlerClose}
