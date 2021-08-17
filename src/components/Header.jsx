@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useRef, useState } from "react"
 import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
@@ -9,20 +9,15 @@ export default function Header() {
 	const [currentValue, setCurrentValue] = useState("")
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
-	const [showBlockLoadTicker, setShowBlockLoadTicker] = useState(true)
-	const [showMesNotLoadingTickers, setShowMesNotLoadingTickers] =
-		useState(false)
 	const { tickers, dispatchTickers } = useTickers()
-	const { thereIsCoins, switchLoadingTickers, connectErr } = useValidate()
+	const { thereIsCoins } = useValidate()
+	const fieldInput = useRef()
 
 	async function handlerAdd() {
-		if (thereIsCoins === "Error") {
-			setShowMesNotLoadingTickers(true)
-			return
-		}
 		const isTicker = tickers.find(ticker => ticker.currency === currentValue)
 		if (isTicker) {
 			setShowMesDoubleTick(true)
+			fieldInput.current.focus()
 			return
 		}
 		const id =
@@ -42,38 +37,17 @@ export default function Header() {
 			return
 		}
 		setShowMesNotTick(true)
+		fieldInput.current.focus()
 	}
-	useEffect(() => {
-		let timerShowMesDoubleTick = null
-		timerShowMesDoubleTick = setTimeout(() => setShowMesDoubleTick(false), 3000)
-		return () => clearTimeout(timerShowMesDoubleTick)
-	}, [showMesDoubleTick])
-
-	useEffect(() => {
-		let timerShowMesNotTick = null
-		timerShowMesNotTick = setTimeout(() => setShowMesNotTick(false), 3000)
-		return () => clearTimeout(timerShowMesNotTick)
-	}, [showMesNotTick])
-
-	useEffect(() => {
-		let timerShowMesNotLoadingTickers = null
-		timerShowMesNotLoadingTickers = setTimeout(
-			() => setShowMesNotLoadingTickers(false),
-			3000
-		)
-		return () => clearTimeout(timerShowMesNotLoadingTickers)
-	}, [showMesNotLoadingTickers])
-
-	useEffect(() => {
-		let timerShowBlockLoadTicker = null
-		if (switchLoadingTickers) {
-			timerShowBlockLoadTicker = setTimeout(
-				() => setShowBlockLoadTicker(false),
-				5000
-			)
+	function handlerKey(e) {
+		if (e.key === "Enter" && currentValue) {
+			return handlerAdd()
 		}
-		return () => clearTimeout(timerShowBlockLoadTicker)
-	}, [switchLoadingTickers])
+		if (e.key !== "Enter") {
+			showMesDoubleTick && setShowMesDoubleTick(false)
+			setShowMesNotTick && setShowMesNotTick(false)
+		}
+	}
 
 	return (
 		<>
@@ -91,15 +65,14 @@ export default function Header() {
 								onChange={e =>
 									setCurrentValue(() => e.target.value.trim().toUpperCase())
 								}
-								onKeyDown={e =>
-									e.key === "Enter" && currentValue ? handlerAdd() : ""
-								}
+								onKeyDown={handlerKey}
 								type="text"
 								name="wallet"
 								id="wallet"
 								className="block w-full pr-10 border-gray-300 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md"
 								placeholder="Например DOGE"
 								value={currentValue}
+								ref={fieldInput}
 							/>
 						</div>
 						<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">
@@ -128,24 +101,6 @@ export default function Header() {
 								{topCurrencies.fourth}
 							</span>
 						</div>
-						{showBlockLoadTicker && (
-							<>
-								{switchLoadingTickers ? (
-									<div className="text-sm text-green-600">
-										Список монет загружен
-									</div>
-								) : (
-									<div className="text-sm text-blue-600">
-										Загружается список монет...
-										{connectErr > 3 && (
-											<p className="text-sm font text-red-600">
-												Нет соединения!
-											</p>
-										)}
-									</div>
-								)}
-							</>
-						)}
 						{showMesDoubleTick && (
 							<div className="text-sm text-red-600">
 								Такой тикер уже добавлен
@@ -154,11 +109,6 @@ export default function Header() {
 						{showMesNotTick && (
 							<div className="text-sm text-red-600">
 								Невозможно обработать тикер
-							</div>
-						)}
-						{showMesNotLoadingTickers && (
-							<div className="text-sm text-red-600">
-								Тикеры еще не загружены
 							</div>
 						)}
 					</div>

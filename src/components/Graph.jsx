@@ -15,8 +15,7 @@ export default function Graph() {
 					<h3 className="text-lg leading-6 font-medium text-gray-900 my-8">
 						{tickers[activeIndex]?.currency} - USD
 					</h3>
-					{/*{tickers[activeIndex].switchPrice ? "yes" : "no"}*/}
-					<div className="flex items-end border-gray-600 border-b border-l h-64">
+					<div className="flex items-end border-gray-600 border-b border-l h-64 overflow-auto">
 						<GraphBars dataTicker={tickers[activeIndex]} />
 					</div>
 					<button

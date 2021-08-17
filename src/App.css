@@ -636,7 +636,7 @@ textarea::placeholder {
 }
 
 select {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a0aec0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a0aec0' stroke-linecap='round' stroke-linejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
@@ -720,7 +720,7 @@ select {
 }
 
 [type="checkbox"]:indeterminate {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' strokeWidth='2' d='M4 8h8'/%3e%3c/svg%3e");
   border-color: transparent;
   background-color: currentColor;
   background-size: 100% 100%;
@@ -14805,15 +14805,15 @@ select {
 }
 
 .stroke-0 {
-  stroke-width: 0;
+  strokeWidth: 0;
 }
 
 .stroke-1 {
-  stroke-width: 1;
+  strokeWidth: 1;
 }
 
 .stroke-2 {
-  stroke-width: 2;
+  strokeWidth: 2;
 }
 
 .table-auto {
@@ -34156,15 +34156,15 @@ select {
   }
 
   .sm\:stroke-0 {
-    stroke-width: 0;
+    strokeWidth: 0;
   }
 
   .sm\:stroke-1 {
-    stroke-width: 1;
+    strokeWidth: 1;
   }
 
   .sm\:stroke-2 {
-    stroke-width: 2;
+    strokeWidth: 2;
   }
 
   .sm\:table-auto {
@@ -53476,15 +53476,15 @@ select {
   }
 
   .md\:stroke-0 {
-    stroke-width: 0;
+    strokeWidth: 0;
   }
 
   .md\:stroke-1 {
-    stroke-width: 1;
+    strokeWidth: 1;
   }
 
   .md\:stroke-2 {
-    stroke-width: 2;
+    strokeWidth: 2;
   }
 
   .md\:table-auto {
@@ -72796,15 +72796,15 @@ select {
   }
 
   .lg\:stroke-0 {
-    stroke-width: 0;
+    strokeWidth: 0;
   }
 
   .lg\:stroke-1 {
-    stroke-width: 1;
+    strokeWidth: 1;
   }
 
   .lg\:stroke-2 {
-    stroke-width: 2;
+    strokeWidth: 2;
   }
 
   .lg\:table-auto {
@@ -92116,15 +92116,15 @@ select {
   }
 
   .xl\:stroke-0 {
-    stroke-width: 0;
+    strokeWidth: 0;
   }
 
   .xl\:stroke-1 {
-    stroke-width: 1;
+    strokeWidth: 1;
   }
 
   .xl\:stroke-2 {
-    stroke-width: 2;
+    strokeWidth: 2;
   }
 
   .xl\:table-auto {

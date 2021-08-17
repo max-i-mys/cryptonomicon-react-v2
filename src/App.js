@@ -3,11 +3,15 @@ import Graph from "./components/Graph"
 import Header from "./components/Header"
 import TickerList from "./components/TickerList"
 import { useTickers } from "./hooks/useTickers"
+import Loading from "./components/Loading"
+import { useValidate } from "./hooks/useValidate"
 
 function App() {
 	const { tickers } = useTickers()
+	const { loading } = useValidate()
 	return (
 		<div className="App">
+			{loading && <Loading />}
 			<div className="App container mx-auto flex flex-col items-center bg-gray-100 p-4">
 				<div className="container">
 					<Header />

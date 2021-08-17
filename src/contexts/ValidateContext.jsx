@@ -4,7 +4,7 @@ import { getActualCoins } from "../api/crud"
 export const ValidateContext = createContext()
 export default function ValidateProvider({ children }) {
 	const [thereIsCoins, setThereIsCoins] = useState("Error")
-	const [switchLoadingTickers, setSwitchLoadingTickers] = useState(false)
+	const [loading, setLoading] = useState(true)
 	const [connectErr, setConnectErr] = useState(0)
 	useEffect(() => {
 		let timerRequestToServer = null
@@ -18,7 +18,7 @@ export default function ValidateProvider({ children }) {
 				setThereIsCoins(actualCoinsArr)
 				setConnectErr(0)
 				if (actualCoins) {
-					setSwitchLoadingTickers(true)
+					setLoading(false)
 				}
 			}
 			if (actualCoinsErr) {
@@ -35,7 +35,7 @@ export default function ValidateProvider({ children }) {
 				value={{
 					thereIsCoins,
 					setThereIsCoins,
-					switchLoadingTickers,
+					loading,
 					connectErr,
 				}}
 			>
