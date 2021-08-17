@@ -24,16 +24,18 @@ export default function Header() {
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
 		const actualTicker = allCoins.find(coin => coin === currentValue)
+		const tickerEl = allCoins.find(coin => currentValue === coin.fullName || currentValue === coin.name)
+		const getCurrency = tickerEl?.name
 		const newTicker = {
-			currency: currentValue,
+			currency: getCurrency,
 			id: id + 1,
 			price: "-",
 			active: false,
 			switchPrice: false,
 		}
-		if (newTicker.currency && !isTicker && actualTicker) {
+		if (newTicker.currency && !isTicker && getCurrency) {
 			dispatchTickers({ type: "ADD_TICKER", payload: newTicker })
-			dispatchCurrencies({ type: "ADD_CURRENCY", payload: currentValue })
+			dispatchCurrencies({ type: "ADD_CURRENCY", payload: getCurrency })
 			setCurrentValue("")
 			return
 		}

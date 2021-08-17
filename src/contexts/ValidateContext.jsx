@@ -21,9 +21,9 @@ export default function ValidateProvider({ children }) {
 							fullName: coin.CoinName.toUpperCase()
 						}
 				)
-				const el = coinsArr.find(coin => "CHIA" === coin.fullName || "CHIA" === coin.name)
-				console.log(el.name)
-				setAllCoins(actualCoinsArr)
+				// const el = coinsArr.find(coin => "CHIA" === coin.fullName || "CHIA" === coin.name)
+				// console.log(el.name)
+				setAllCoins(coinsArr)
 				setCountErr(0)
 				if (actualCoins) {
 					setLoading(false)
