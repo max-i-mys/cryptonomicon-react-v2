@@ -12,17 +12,13 @@ export default function ValidateProvider({ children }) {
 		timerRequestToServer = setTimeout(async function requestToServer() {
 			const [actualCoins, actualCoinsErr] = await getActualCoins()
 			if (!actualCoinsErr) {
-				const actualCoinsArr = Object.values(actualCoins.Data).map(
-					coin => coin.Symbol
-				)
 				const coinsArr = Object.values(actualCoins.Data).map(
-						coin => coin = {
+					coin =>
+						(coin = {
 							name: coin.Symbol.toUpperCase(),
-							fullName: coin.CoinName.toUpperCase()
-						}
+							fullName: coin.CoinName.toUpperCase().replace(/\s+/g, ""),
+						})
 				)
-				// const el = coinsArr.find(coin => "CHIA" === coin.fullName || "CHIA" === coin.name)
-				// console.log(el.name)
 				setAllCoins(coinsArr)
 				setCountErr(0)
 				if (actualCoins) {

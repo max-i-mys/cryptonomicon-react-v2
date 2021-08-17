@@ -2,8 +2,7 @@ import { useRef, useState } from "react"
 import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
-import { topCurrencies } from "../utils/constants"
-import SearchHint from "./SearchHint";
+import SearchHint from "./SearchHint"
 
 export default function Header() {
 	const [, dispatchCurrencies] = useCurrencies()
@@ -23,8 +22,9 @@ export default function Header() {
 		}
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
-		const actualTicker = allCoins.find(coin => coin === currentValue)
-		const tickerEl = allCoins.find(coin => currentValue === coin.fullName || currentValue === coin.name)
+		const tickerEl = allCoins.find(
+			coin => currentValue === coin.fullName || currentValue === coin.name
+		)
 		const getCurrency = tickerEl?.name
 		const newTicker = {
 			currency: getCurrency,
@@ -36,7 +36,7 @@ export default function Header() {
 		if (newTicker.currency && !isTicker && getCurrency) {
 			dispatchTickers({ type: "ADD_TICKER", payload: newTicker })
 			dispatchCurrencies({ type: "ADD_CURRENCY", payload: getCurrency })
-			setCurrentValue("")
+			fieldInput.current.value = ""
 			return
 		}
 		setShowMesNotTick(true)
@@ -66,7 +66,9 @@ export default function Header() {
 						<div className="mt-1 relative rounded-md shadow-md">
 							<input
 								onChange={e =>
-									setCurrentValue(() => e.target.value.trim().toUpperCase())
+									setCurrentValue(() =>
+										e.target.value.toUpperCase().replace(/\s+/g, "")
+									)
 								}
 								onKeyDown={handlerKey}
 								type="text"
@@ -74,11 +76,10 @@ export default function Header() {
 								id="wallet"
 								className="block w-full pr-10 border-gray-300 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md"
 								placeholder="Например DOGE"
-								value={currentValue}
 								ref={fieldInput}
 							/>
 						</div>
-						<SearchHint current={currentValue}/>
+						<SearchHint current={currentValue} />
 						{/*<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">*/}
 						{/*	<span*/}
 						{/*		onClick={() => setCurrentValue(() => topCurrencies.first)}*/}
