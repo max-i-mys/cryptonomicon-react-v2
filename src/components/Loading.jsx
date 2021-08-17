@@ -1,12 +1,12 @@
 import { useValidate } from "../hooks/useValidate"
 
 export default function Loading() {
-	const { connectErr } = useValidate()
+	const { countErr } = useValidate()
 	return (
 		<>
 			<div className="fixed w-100 h-100 opacity-80 bg-purple-800 inset-0 z-50 flex items-center justify-center">
 				<div>
-					{connectErr > 3 ? (
+					{countErr > 3 ? (
 						<p className="text-2xl text-red-600 font-bold text-center">
 							Ошибка получения данных с сервера!
 						</p>

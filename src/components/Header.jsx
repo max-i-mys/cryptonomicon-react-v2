@@ -3,6 +3,7 @@ import { useCurrencies } from "../hooks/useCurrencies"
 import { useTickers } from "../hooks/useTickers"
 import { useValidate } from "../hooks/useValidate"
 import { topCurrencies } from "../utils/constants"
+import SearchHint from "./SearchHint";
 
 export default function Header() {
 	const [, dispatchCurrencies] = useCurrencies()
@@ -10,7 +11,7 @@ export default function Header() {
 	const [showMesDoubleTick, setShowMesDoubleTick] = useState(false)
 	const [showMesNotTick, setShowMesNotTick] = useState(false)
 	const { tickers, dispatchTickers } = useTickers()
-	const { thereIsCoins } = useValidate()
+	const { allCoins } = useValidate()
 	const fieldInput = useRef()
 
 	async function handlerAdd() {
@@ -22,7 +23,7 @@ export default function Header() {
 		}
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
-		const actualTicker = thereIsCoins.find(coin => coin === currentValue)
+		const actualTicker = allCoins.find(coin => coin === currentValue)
 		const newTicker = {
 			currency: currentValue,
 			id: id + 1,
@@ -75,32 +76,33 @@ export default function Header() {
 								ref={fieldInput}
 							/>
 						</div>
-						<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">
-							<span
-								onClick={() => setCurrentValue(() => topCurrencies.first)}
-								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
-							>
-								{topCurrencies.first}
-							</span>
-							<span
-								onClick={() => setCurrentValue(() => topCurrencies.second)}
-								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
-							>
-								{topCurrencies.second}
-							</span>
-							<span
-								onClick={() => setCurrentValue(() => topCurrencies.third)}
-								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
-							>
-								{topCurrencies.third}
-							</span>
-							<span
-								onClick={() => setCurrentValue(() => topCurrencies.fourth)}
-								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
-							>
-								{topCurrencies.fourth}
-							</span>
-						</div>
+						<SearchHint current={currentValue}/>
+						{/*<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">*/}
+						{/*	<span*/}
+						{/*		onClick={() => setCurrentValue(() => topCurrencies.first)}*/}
+						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
+						{/*	>*/}
+						{/*		{topCurrencies.first}*/}
+						{/*	</span>*/}
+						{/*	<span*/}
+						{/*		onClick={() => setCurrentValue(() => topCurrencies.second)}*/}
+						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
+						{/*	>*/}
+						{/*		{topCurrencies.second}*/}
+						{/*	</span>*/}
+						{/*	<span*/}
+						{/*		onClick={() => setCurrentValue(() => topCurrencies.third)}*/}
+						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
+						{/*	>*/}
+						{/*		{topCurrencies.third}*/}
+						{/*	</span>*/}
+						{/*	<span*/}
+						{/*		onClick={() => setCurrentValue(() => topCurrencies.fourth)}*/}
+						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
+						{/*	>*/}
+						{/*		{topCurrencies.fourth}*/}
+						{/*	</span>*/}
+						{/*</div>*/}
 						{showMesDoubleTick && (
 							<div className="text-sm text-red-600">
 								Такой тикер уже добавлен
