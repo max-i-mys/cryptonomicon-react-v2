@@ -76,36 +76,11 @@ export default function Header() {
 								id="wallet"
 								className="block w-full pr-10 border-gray-300 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md"
 								placeholder="Например DOGE"
+								autoComplete="off"
 								ref={fieldInput}
 							/>
 						</div>
-						<SearchHint current={currentValue} />
-						{/*<div className="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap">*/}
-						{/*	<span*/}
-						{/*		onClick={() => setCurrentValue(() => topCurrencies.first)}*/}
-						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
-						{/*	>*/}
-						{/*		{topCurrencies.first}*/}
-						{/*	</span>*/}
-						{/*	<span*/}
-						{/*		onClick={() => setCurrentValue(() => topCurrencies.second)}*/}
-						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
-						{/*	>*/}
-						{/*		{topCurrencies.second}*/}
-						{/*	</span>*/}
-						{/*	<span*/}
-						{/*		onClick={() => setCurrentValue(() => topCurrencies.third)}*/}
-						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
-						{/*	>*/}
-						{/*		{topCurrencies.third}*/}
-						{/*	</span>*/}
-						{/*	<span*/}
-						{/*		onClick={() => setCurrentValue(() => topCurrencies.fourth)}*/}
-						{/*		className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"*/}
-						{/*	>*/}
-						{/*		{topCurrencies.fourth}*/}
-						{/*	</span>*/}
-						{/*</div>*/}
+						<SearchHint current={currentValue.toUpperCase()} />
 						{showMesDoubleTick && (
 							<div className="text-sm text-red-600">
 								Такой тикер уже добавлен
