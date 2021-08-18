@@ -13,6 +13,20 @@ export default function TickersProvider({ children }) {
 	const [tickers, dispatchTickers] = useReducer(reducer, initialState)
 
 	useEffect(() => {
+		if (!localStorage.getItem("saveTickers")) {
+			localStorage.setItem("saveTickers", JSON.stringify([]))
+		} else {
+			const saveTickers = JSON.parse(localStorage.getItem("saveTickers", tickers))
+			dispatchTickers({
+				type: "INITIAL_TICKERS",
+				payload: saveTickers,
+			})
+			saveTickers.forEach((tickers, index) => tickers.active && setActiveIndex(index))
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
 		let timerRequestToServer = null
 		timerRequestToServer = setTimeout(() => ref.current(), 0)
 		return () => clearTimeout(timerRequestToServer)
@@ -42,7 +56,13 @@ export default function TickersProvider({ children }) {
 
 	function reducer(state, action) {
 		switch (action.type) {
+			case "INITIAL_TICKERS":
+				return action.payload
 			case "ADD_TICKER":
+				localStorage.setItem(
+					"saveTickers",
+					JSON.stringify([...state, action.payload])
+				)
 				return [...state, action.payload]
 			case "DELETE_TICKER": {
 				const newState = [...state]
@@ -50,6 +70,7 @@ export default function TickersProvider({ children }) {
 				if (idx !== -1) {
 					newState.splice(idx, 1)
 				}
+				localStorage.setItem("saveTickers", JSON.stringify([...newState]))
 				return newState
 			}
 			case "ADD_ACTIVE_TICKER": {
@@ -62,6 +83,7 @@ export default function TickersProvider({ children }) {
 						ticker.active = false
 					}
 				})
+				localStorage.setItem("saveTickers", JSON.stringify([...newState]))
 				return newState
 			}
 			case "DISABLE_ACTIVE_TICKER": {
@@ -69,6 +91,7 @@ export default function TickersProvider({ children }) {
 				if (newState[activeIndex]) {
 					newState[activeIndex].active = false
 					setActiveIndex(null)
+					localStorage.setItem("saveTickers", JSON.stringify([...newState]))
 				}
 				return newState
 			}

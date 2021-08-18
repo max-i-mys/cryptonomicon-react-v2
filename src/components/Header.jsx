@@ -14,7 +14,11 @@ export default function Header() {
 	const fieldInput = useRef()
 
 	async function handlerAdd() {
-		const isTicker = tickers.find(ticker => ticker.currency === currentValue)
+		const tickerEl = allCoins.find(
+			coin => currentValue === coin.fullName || currentValue === coin.name
+		)
+		const getCurrency = tickerEl?.name
+		const isTicker = tickers.find(ticker => ticker.currency === getCurrency)
 		if (isTicker) {
 			setShowMesDoubleTick(true)
 			fieldInput.current.focus()
@@ -22,10 +26,7 @@ export default function Header() {
 		}
 		const id =
 			tickers.length > 0 ? Math.max(...tickers.map(ticker => ticker.id)) : 0
-		const tickerEl = allCoins.find(
-			coin => currentValue === coin.fullName || currentValue === coin.name
-		)
-		const getCurrency = tickerEl?.name
+
 		const newTicker = {
 			currency: getCurrency,
 			id: id + 1,
@@ -51,7 +52,6 @@ export default function Header() {
 			setShowMesNotTick && setShowMesNotTick(false)
 		}
 	}
-
 	return (
 		<>
 			<section>

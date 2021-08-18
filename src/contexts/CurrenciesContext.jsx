@@ -1,12 +1,22 @@
-import { createContext, useReducer } from "react"
+import { createContext, useEffect, useReducer } from "react"
 
 export const CurrenciesContext = createContext()
 const initialState = []
 export default function CurrenciesProvider({ children }) {
 	const [currencies, dispatchCurrencies] = useReducer(reducer, initialState)
+	useEffect(() => {
+		if (localStorage.getItem("saveTickers")) {
+			const dataLocalStorage = JSON.parse(localStorage.getItem("saveTickers"))
+			const currencyList = dataLocalStorage.map(coin => coin.currency)
+			dispatchCurrencies({ type: "INITIAL_CURRENCY", payload: currencyList })
+		}
+	}, [])
 
 	function reducer(state, action) {
 		switch (action.type) {
+			case "INITIAL_CURRENCY": {
+				return action.payload
+			}
 			case "ADD_CURRENCY": {
 				let addedCurrencies = [...state]
 				const isThereCurrency = addedCurrencies.find(

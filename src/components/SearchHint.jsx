@@ -7,16 +7,9 @@ export default function SearchHint({ current }) {
 	useEffect(() => {
 		if (current) {
 			const filteredArr = [...allCoins]
-				.filter(function (coin) {
-					const searchName = coin.name.split(current).join("")
-					const searchFullName = coin.fullName.split(current).join("")
-					if (
-						coin.name.length !== searchName.length ||
-						coin.fullName.length !== searchFullName.length
-					) {
-						return coin
-					}
-				})
+				.filter(
+					coin => coin.name.includes(current) || coin.fullName.includes(current)
+				)
 				.sort(
 					coin =>
 						(coin.name === current) * -1 || (coin.fullName === current) * -1
@@ -50,3 +43,15 @@ export default function SearchHint({ current }) {
 		</>
 	)
 }
+
+// const filteredArr = [...allCoins]
+// 		.filter(coin => {
+// 			const searchName = coin.name.split(current).join("")
+// 			const searchFullName = coin.fullName.split(current).join("")
+// 			if (
+// 					coin.name.length !== searchName.length ||
+// 					coin.fullName.length !== searchFullName.length
+// 			) {
+// 				return coin
+// 			}
+// 		})
