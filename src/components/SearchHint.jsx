@@ -24,11 +24,6 @@ export default function SearchHint({ current, addHint }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [current])
 
-	function fillInputNewHint(coin) {
-		addHint(coin)
-		setFilteredCoins([])
-	}
-
 	return (
 		<>
 			{filteredCoins.length > 0 && (
@@ -36,7 +31,7 @@ export default function SearchHint({ current, addHint }) {
 					{filteredCoins.map((coin, index) => {
 						return (
 							<span
-								onClick={() => fillInputNewHint(coin.name)}
+								onClick={() => addHint(coin.name)}
 								key={index}
 								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
 							>

@@ -41,6 +41,7 @@ export default function Header() {
 			dispatchTickers({ type: "ADD_TICKER", payload: newTicker })
 			dispatchCurrencies({ type: "ADD_CURRENCY", payload: getCurrency })
 			fieldInput.current.value = ""
+			setCurrentValue("")
 			return
 		}
 		setShowMesNotTick(true)
