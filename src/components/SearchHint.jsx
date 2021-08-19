@@ -1,7 +1,7 @@
 import { useValidate } from "../hooks/useValidate"
 import { useEffect, useState } from "react"
 
-export default function SearchHint({ current }) {
+export default function SearchHint({ current, addHint }) {
 	const { allCoins } = useValidate()
 	const [filteredCoins, setFilteredCoins] = useState([])
 	useEffect(() => {
@@ -24,6 +24,11 @@ export default function SearchHint({ current }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [current])
 
+	function fillInputNewHint(coin) {
+		addHint(coin)
+		setFilteredCoins([])
+	}
+
 	return (
 		<>
 			{filteredCoins.length > 0 && (
@@ -31,6 +36,7 @@ export default function SearchHint({ current }) {
 					{filteredCoins.map((coin, index) => {
 						return (
 							<span
+								onClick={() => fillInputNewHint(coin.name)}
 								key={index}
 								className="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
 							>
@@ -43,15 +49,3 @@ export default function SearchHint({ current }) {
 		</>
 	)
 }
-
-// const filteredArr = [...allCoins]
-// 		.filter(coin => {
-// 			const searchName = coin.name.split(current).join("")
-// 			const searchFullName = coin.fullName.split(current).join("")
-// 			if (
-// 					coin.name.length !== searchName.length ||
-// 					coin.fullName.length !== searchFullName.length
-// 			) {
-// 				return coin
-// 			}
-// 		})

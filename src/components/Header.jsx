@@ -13,9 +13,12 @@ export default function Header() {
 	const { allCoins } = useValidate()
 	const fieldInput = useRef()
 
-	async function handlerAdd() {
+	async function handlerAdd(value) {
+		const correctCurrentValue = value || currentValue
 		const tickerEl = allCoins.find(
-			coin => currentValue === coin.fullName || currentValue === coin.name
+			coin =>
+				correctCurrentValue === coin.fullName ||
+				correctCurrentValue === coin.name
 		)
 		const getCurrency = tickerEl?.name
 		const isTicker = tickers.find(ticker => ticker.currency === getCurrency)
@@ -52,6 +55,10 @@ export default function Header() {
 			setShowMesNotTick && setShowMesNotTick(false)
 		}
 	}
+	function handlerAddSearchHint(currentHint) {
+		fieldInput.current.value = currentHint
+		handlerAdd(currentHint)
+	}
 	return (
 		<>
 			<section>
@@ -80,7 +87,10 @@ export default function Header() {
 								ref={fieldInput}
 							/>
 						</div>
-						<SearchHint current={currentValue.toUpperCase()} />
+						<SearchHint
+							current={currentValue.toUpperCase()}
+							addHint={handlerAddSearchHint}
+						/>
 						{showMesDoubleTick && (
 							<div className="text-sm text-red-600">
 								Такой тикер уже добавлен
